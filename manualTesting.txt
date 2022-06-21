@@ -1,0 +1,58 @@
+A. Test whether wins and losses are kept track of correctly
+    STEPS:
+        1. Launch the local server using nodemon
+        2. Navigate to http://localhost:3000
+        3. Click the 'Draw' Button
+        4. Select 2 bots using the appropriate 'Add to Duo' buttons
+        5. Click the 'DUEL' button
+        6. Take note of the message displayed (either 'You lost!' or 'You won!')
+        7. Verify that Wins and Losses counters update appropriately
+        8. Click 'Play again' button
+        9. Repeat steps 3-8 until both a win and loss have occured
+
+    POST-CONDITIONS
+        1. If message 'You lost!' displays, Losses counter should increment by 1 and display correctly
+        2. If message 'You won!' displays, Wins counter should increment by 1 and display correctly
+
+B. Bug report
+    DESCRIPTION: See All Bots button does not work
+    
+    STEPS TO REPRODUCE
+        1. Launch the local server using nodemon
+        2. Navigate to http://localhost:3000
+        3. Click the 'See All Bots' button
+        4. Take note that no changes occur on the page
+
+    EXPECTED RESULT
+        1. Should display all robots in the game
+        2. div#all-bots should update with robot cards
+
+    ACTUAL RESULT 
+        1. Console displays uncaught error with GET response of 400 (BAD REQUEST)
+        2. Page does not update div#all-bots
+
+    ENVIRONMENT
+        1. Windows 11 OS, Chrome Version 102, JS V8 10.2.154.8
+
+C. Bug report
+    DESCRIPTION: Losses counter increments regardless of user win/loss
+
+    STEPS TO REPRODUCE
+        1. Start the local server using nodemon
+        2. Navigate to http://localhost:3000
+        3. Click the 'Draw' Button
+        4. Select 2 bots using the appropriate 'Add to Duo' buttons
+        5. Click the 'DUEL' button
+        6. Take note of the message displayed (either 'You lost!' or 'You won!')
+        7. If loss occurs, click 'Play again' button
+        8. Repeat steps 3-7 until message displayed is 'You won!'
+        9. Note that losses increment and wins stays at 0.
+        
+    EXPECTED RESULT
+        1. After a win, 'Wins' counter should increment by 1 and display correctly
+    
+    ACTUAL RESULT
+        1. After a win, 'Wins' counter does not update; It stays at 0 while the 'Losses' counter increments
+    
+    ENVIRONMENT
+        1. Windows 11 OS, Chrome Version 102, JS V8 10.2.154.8
