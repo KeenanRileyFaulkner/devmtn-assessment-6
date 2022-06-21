@@ -14,15 +14,13 @@ var rollbar = new Rollbar({
   captureUnhandledRejections: true,
 })
 
-// record a generic message and send it to Rollbar
-rollbar.log('Hello world!')
-
 app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/api/robots', (req, res) => {
     try {
-        res.status(200).send(botsArr)
+        res.status(200).send(botsArr) //BUG ON THIS LINE (botsArr not declared nor initialized)
     } catch (error) {
+        rollbar.error('Error getting bots from GET /api/robots endpoint');
         console.log('ERROR GETTING BOTS', error)
         res.sendStatus(400)
     }
@@ -34,7 +32,9 @@ app.get('/api/robots/five', (req, res) => {
         let choices = shuffled.slice(0, 5)
         let compDuo = shuffled.slice(6, 8)
         res.status(200).send({choices, compDuo})
+        rollbar.info('Successfully drew five cards for user');
     } catch (error) {
+        rollbar.error('Error drawing five bots from GET /api/robots/five endpoint');
         console.log('ERROR GETTING FIVE BOTS', error)
         res.sendStatus(400)
     }
@@ -62,10 +62,12 @@ app.post('/api/duel', (req, res) => {
             playerRecord.losses++
             res.status(200).send('You lost!')
         } else {
-            playerRecord.losses++
+            playerRecord.losses++ //BUG (TYPO) ON THIS LINE!
+            rollbar.warn('Losses incremented even though user won!');
             res.status(200).send('You won!')
         }
     } catch (error) {
+        rollbar.error('Error dueling at POST /api/duel endpoint');
         console.log('ERROR DUELING', error)
         res.sendStatus(400)
     }
@@ -74,6 +76,7 @@ app.post('/api/duel', (req, res) => {
 app.get('/api/player', (req, res) => {
     try {
         res.status(200).send(playerRecord)
+        rollbar.info('User record may be incorrect. Successfully sent record.');
     } catch (error) {
         console.log('ERROR GETTING PLAYER STATS', error)
         res.sendStatus(400)
